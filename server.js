@@ -5,12 +5,12 @@ const { MongoClient } = require('mongodb');
 const shortId = require('shortid');
 const cors = require('cors');
 const port = process.env.PORT || 5000;
-const url = "mongodb://localhost/27017";
-const dbName = "shortener";
+const url = "mongodb+srv://dbUser:dbUser@cluster0.cejmf.mongodb.net/<dbname>?retryWrites=true&w=majority";
+const dbName = "Cluster0";
 
 app.use(bodyParser.json());
 app.use(cors({
-    origin:"http://127.0.0.1:5500"
+    origin:"https://stoic-hodgkin-24a38b.netlify.app"
 }));
 
 
@@ -24,7 +24,9 @@ app.post('/shortUrls',async (req,res)=>{
         //select the DB
         let db = connection.db(dbName);
         //perform action
-        db.collection("shortUrlCollection").insertOne({"fullUrl":req.body.fullUrl, "shortUrl": shortId.generate(), "clicks": 0});
+        let resultArray = await db.collection("shortUrlCollection").find({"fullUrl":req.body.fullUrl}).toArray();
+        if(resultArray.length==0)
+        await db.collection("shortUrlCollection").insertOne({"fullUrl":req.body.fullUrl, "shortUrl": shortId.generate(), "clicks": 0});
         //close the connection
         connection.close();
         res.json({
