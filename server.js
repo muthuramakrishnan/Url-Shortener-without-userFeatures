@@ -10,7 +10,7 @@ const dbName = "Cluster0";
 
 app.use(bodyParser.json());
 app.use(cors({
-    origin:"https://stoic-hodgkin-24a38b.netlify.app"
+    origin:"https://stoic-hodgkin-24a38b.netlify.app/dashboard"
 }));
 
 
